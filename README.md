@@ -41,7 +41,7 @@ export OPTIMIZE_CFLAGS="-march=$CPU"
 	--prefix=$PREFIX --disable-postproc \
 	--disable-debug --disable-doc \
 	--disable-symver --disable-doc --disable-avdevice \
-	--enable-gpl --enable-static --enable-shared \
+	--enable-gpl --enable-static  \
 	--enable-neon --enable-hwaccels --enable-jni \
 	--enable-small --enable-mediacodec \
 	--cross-prefix=$CROSS_PREFIX --target-os=android \
