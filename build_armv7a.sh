@@ -40,5 +40,7 @@ OPTIMIZE_CFLAGS="-march=$CPU"
 	--extra-ldflags="-L $ADDI_LDFLAGS" \
 	--pkg-config="pkg-config --static"
 
+
+make clean
 make -j 8
 make install
