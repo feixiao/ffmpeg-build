@@ -5,7 +5,9 @@
 #TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/darwin-x86_64
 
 echo $(pwd)
-NDK=/home/frank/android/ndk/android-ndk-r20b
+# 22以后版本有问题
+# aarch64-linux-android-nm: No such file or directory 
+NDK=/opt/ndk/android-ndk-r22
 TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64
 
 OUT_DIR=$(pwd)/out/ffmpeg-6.1
@@ -28,7 +30,7 @@ OPTIMIZE_CFLAGS="-march=$CPU"
 	--prefix=$PREFIX --disable-postproc \
 	--disable-debug --disable-doc \
 	--disable-symver --disable-doc --disable-avdevice \
-	--enable-gpl --enable-static  \
+	--enable-gpl --enable-static --enable-shared \
 	--enable-neon --enable-hwaccels --enable-jni \
 	--enable-small --enable-mediacodec \
 	--cross-prefix=$CROSS_PREFIX --target-os=android \
