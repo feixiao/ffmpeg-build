@@ -17,28 +17,35 @@ echo $(pwd)
 ARCH=arm64
 CPU=armv8-a
 API=21
-export CC=$TOOLCHAIN/bin/aarch64-linux-android$API-clang
-export CXX=$TOOLCHAIN/bin/aarch64-linux-android$API-clang++
+CC=$TOOLCHAIN/bin/aarch64-linux-android$API-clang
+CXX=$TOOLCHAIN/bin/aarch64-linux-android$API-clang++
 SYSROOT=$NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot
 CROSS_PREFIX=$TOOLCHAIN/bin/aarch64-linux-android-
 PREFIX=$OUT_DIR/arm64-v8a
-OPTIMIZE_CFLAGS="-march=$CPU"
+#OPTIMIZE_CFLAGS="-march=$CPU"
 
 ./configure \
+	--enable-pic \
 	--prefix=$PREFIX --disable-postproc \
 	--disable-debug --disable-doc \
 	--disable-symver --disable-doc --disable-avdevice \
 	--enable-gpl --enable-static  --enable-shared \
-	--enable-neon --enable-hwaccels --enable-jni \
+    --enable-hwaccels --enable-jni \
+	--disable-asm --disable-neon \
 	--enable-small --enable-mediacodec \
 	--cross-prefix=$CROSS_PREFIX --target-os=android \
 	--arch=$ARCH --cpu=$CPU \
 	--cc=$CC  --cxx=$CXX \
 	--enable-cross-compile \
 	--sysroot=$SYSROOT \
-	--extra-cflags="-Os -fpic $OPTIMIZE_CFLAGS" \
+	--extra-cflags="-Os -fPIC $OPTIMIZE_CFLAGS" \
 	--extra-ldflags="-L $ADDI_LDFLAGS" \
-	--pkg-config="pkg-config --static"
+	--disable-debug \
+    --disable-doc \
+    --disable-ffmpeg \
+    --disable-ffplay \
+    --disable-ffprobe \
+    --disable-symver 
 
 make clean
 make -j 8

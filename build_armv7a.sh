@@ -24,24 +24,24 @@ CXX=$TOOLCHAIN/bin/armv7a-linux-androideabi$API-clang++
 SYSROOT=$NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot
 CROSS_PREFIX=$TOOLCHAIN/bin/arm-linux-androideabi-
 PREFIX=$OUT_DIR/armv7a
-OPTIMIZE_CFLAGS="-march=$CPU"
+#OPTIMIZE_CFLAGS="-march=$CPU"
 
 ./configure \
+	--enable-pic \
 	--prefix=$PREFIX --disable-postproc \
 	--disable-debug --disable-doc \
+	--disable-asm --disable-neon \
 	--disable-symver --disable-doc --disable-avdevice \
 	--enable-gpl --enable-static --enable-shared \
-	--enable-neon --enable-hwaccels --enable-jni \
+	--enable-hwaccels --enable-jni \
 	--enable-small --enable-mediacodec \
 	--cross-prefix=$CROSS_PREFIX --target-os=android \
 	--arch=$ARCH --cpu=$CPU \
 	--cc=$CC  --cxx=$CXX \
 	--enable-cross-compile \
 	--sysroot=$SYSROOT \
-	--extra-cflags="-Os -fpic $OPTIMIZE_CFLAGS" \
-	--extra-ldflags="-L $ADDI_LDFLAGS" \
-	--pkg-config="pkg-config --static"
-
+	--extra-cflags="-Os -fPIC $OPTIMIZE_CFLAGS" \
+	--extra-ldflags="-L $ADDI_LDFLAGS" 
 
 make clean
 make -j 8
