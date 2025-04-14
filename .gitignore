@@ -2,3 +2,5 @@ out
 x264
 ffmpeg-6.0
 ffmpeg-6.1
+x265_2.5
+*.tar.*
