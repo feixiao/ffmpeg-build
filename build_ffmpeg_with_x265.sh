@@ -2,36 +2,37 @@
 
 echo $(pwd)
 
-export NDK=/opt/ndk/android-ndk-r22
+NDK=/opt/ndk/android-ndk-r22
 
-export TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64
-export PATH=${PATH}:${NDK}/toolchains/llvm/prebuilt/linux-x86_64/bin
-export API=21
+TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64
+PATH=${PATH}:${NDK}/toolchains/llvm/prebuilt/linux-x86_64/bin
+API=21
 
-export BASE_PATH=$(pwd)
-export OUT_DIR=$(pwd)/out/ffmpeg-6.1
-export PKG_CONFIG_PATH="$(pwd)/out/x265/lib/pkgconfig$PKG_CONFIG_PATH"
+BASE_PATH=$(pwd)
+OUT_DIR=$(pwd)/out/ffmpeg-6.1
+PKG_CONFIG_PATH="/home/frank/wk/github/ffmpeg-build/out/x265/include/pkgconfig$PKG_CONFIG_PATH"
 
 
 cd ./ffmpeg-6.1
 
 
-export ARCH=arm64
-export CPU=armv8-a
-export CC=$TOOLCHAIN/bin/aarch64-linux-android$API-clang
-export CXX=$TOOLCHAIN/bin/aarch64-linux-android$API-clang++
-export SYSROOT=$NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot
-export CROSS_PREFIX=$TOOLCHAIN/bin/aarch64-linux-android-
-export PREFIX=$OUT_DIR/arm64-v8a
+ARCH=arm64
+CPU=armv8-a
+CC=$TOOLCHAIN/bin/aarch64-linux-android${API}-clang
+CXX=$TOOLCHAIN/bin/aarch64-linux-android${API}-clang++
+SYSROOT=$NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot
+CROSS_PREFIX=$TOOLCHAIN/bin/aarch64-linux-android-
+PREFIX=$OUT_DIR/arm64-v8a
 #OPTIMIZE_CFLAGS="-march=$CPU"
 
 ./configure \
 	--enable-pic \
 	--prefix=$PREFIX --disable-postproc \
-    --enable-libx265 \
+	--enable-libx265 \
+	--pkg-config="pkg-config --static" \
 	--disable-debug --disable-doc \
 	--disable-symver --disable-doc --disable-avdevice \
-	--enable-gpl --enable-static  \
+	--enable-gpl --enable-static  --enable-shared \
     --enable-hwaccels --enable-jni \
 	--disable-asm --disable-neon \
 	--enable-small --enable-mediacodec \
@@ -40,8 +41,8 @@ export PREFIX=$OUT_DIR/arm64-v8a
 	--cc=$CC  --cxx=$CXX \
 	--enable-cross-compile \
 	--sysroot=$SYSROOT \
-	--extra-cflags="-I${BASE_PATH}/out/x265/include -Os -fPIC $OPTIMIZE_CFLAGS" \
-	--extra-ldflags="-L${BASE_PATH}/out/x265/lib" \
+	--extra-cflags="-Os -fPIC $OPTIMIZE_CFLAGS" \
+	--extra-ldflags="-L $ADDI_LDFLAGS" \
 	--disable-debug \
     --disable-doc \
     --disable-ffmpeg \
@@ -49,6 +50,6 @@ export PREFIX=$OUT_DIR/arm64-v8a
     --disable-ffprobe \
     --disable-symver 
 
-#make clean
+make clean
 make -j 8
 make install
